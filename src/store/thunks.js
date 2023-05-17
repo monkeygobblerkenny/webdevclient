@@ -100,3 +100,14 @@ export const fetchStudentThunk = id => async dispatch => {  // The THUNK
     console.error(err);
   }
 };
+
+export const deleteCampusThunk = campusId => async dispatch => {  // The THUNK
+  try {
+    // API "delete" call to delete student (based on "studentID") from database
+    await axios.delete(`/api/campuses/${campusId}`);  
+    // Delete successful so change state with dispatch
+    dispatch(ac.deleteCampus(campusId));
+  } catch(err) {
+    console.error(err);
+  }
+};
