@@ -10,6 +10,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchStudentThunk } from "../../store/thunks";
 import { editStudentThunk } from '../../store/thunks';
+import { fetchStudentThunk, deleteStudentThunk } from "../../store/thunks";
 import { StudentView } from "../views";
 import {EditStudentView} from "../views"
 import { Redirect } from 'react-router-dom'
@@ -84,13 +85,12 @@ class StudentContainer extends Component {
     return (
       <div>
         <Header />
-
         <StudentView student={this.props.student} />
-
         <EditStudentView student={this.props.student}           
         handleChange = {this.handleChange} 
         handleSubmit={this.handleSubmit}     
         ></EditStudentView>
+        <StudentView student={this.props.student} deleteStudent={this.props.deleteStudent} />
       </div>
     );
   }
@@ -108,7 +108,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     fetchStudent: (id) => dispatch(fetchStudentThunk(id)),
-    editStudent: (id) => dispatch(editStudentThunk(id))
+    editStudent: (id) => dispatch(editStudentThunk(id)),
+    deleteStudent: (studentId) => dispatch(deleteStudentThunk(studentId)),
   };
 };
 

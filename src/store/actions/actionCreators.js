@@ -72,3 +72,10 @@ export const deleteCampus = (campusId) => {
     payload: campusId,
   };
 };
+
+export const addCampus = (campus) => {
+  return {
+    type: at.ADD_CAMPUS,
+    payload: campus,
+  };
+};
