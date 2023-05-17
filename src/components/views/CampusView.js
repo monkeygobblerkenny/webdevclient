@@ -13,6 +13,13 @@ const CampusView = (props) => {
     return (
     <div>
       <h1>{campus.name}</h1>
+      <h4>campus id: {campus.id}</h4>
+      <img src={campus.imageUrl} alt='campus' style={{
+        minWidth: '20%',
+        maxWidth: 200,
+        minHeight: '20%',
+        maxHeight: 200,
+      }}/>
       <p>{campus.address}</p>
       <p>{campus.description}</p>
       <p>There are no students.</p>
@@ -32,6 +39,13 @@ const CampusView = (props) => {
   return (
     <div>
       <h1>{campus.name}</h1>
+      <h4>campus id: {campus.id}</h4>
+      <img src={campus.imageUrl} alt='campus' style={{
+        minWidth: '20%',
+        maxWidth: 200,
+        minHeight: '20%',
+        maxHeight: 200,
+      }}/>
       <p>{campus.address}</p>
       <p>{campus.description}</p>
       {campus.students.map( student => {
@@ -41,7 +55,9 @@ const CampusView = (props) => {
             <Link to={`/student/${student.id}`}>
               <h2>{name}</h2>
             </Link>
-            <button onClick={() => deleteStudent(student.id)}>Delete</button>             
+            <Link to={'/campuses'}>
+              <button onClick={() => deleteStudent(student.id)}>Delete</button>     
+            </Link>        
           </div>
         );
       })}
