@@ -57,7 +57,7 @@ export const addStudentThunk = (student) => async (dispatch) => {  // The THUNK
     dispatch(ac.addStudent(res.data));
     return res.data;
   } catch(err) {
-    console.error(err);
+    console.error(err.response.data);
   }
 };
 
