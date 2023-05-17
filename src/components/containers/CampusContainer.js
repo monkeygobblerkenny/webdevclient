@@ -8,23 +8,76 @@ If needed, it also defines the component's "connect" function.
 import Header from './Header';
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchCampusThunk } from "../../store/thunks";
-
+import { editCampusThunk, fetchCampusThunk } from "../../store/thunks";
 import { CampusView } from "../views";
-
+import {EditCampusView} from '../views';
+import { Redirect } from 'react-router-dom'
 class CampusContainer extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      name: "", 
+      description: "", 
+      campusId: null, 
+      image_url: "",
+      redirect: false, 
+    };
+  }
+
   // Get the specific campus data from back-end database
   componentDidMount() {
     // Get campus ID from URL (API link)
     this.props.fetchCampus(this.props.match.params.id);
   }
 
+  // Capture input data when it is entered
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+
+  // Take action after user click the submit button
+  handleSubmit = async event => {
+    event.preventDefault();  // Prevent browser reload/refresh after submit.
+    let campus = this.props.campus
+    campus.name = this.state.name
+    campus.address = this.state.address
+    campus.description = this.state.description
+    campus.imageUrl = this.state.imageUrl
+    console.log(campus)
+    
+    let editedCampus = await this.props.editCampus(campus)
+    this.state = {
+      redirect:true
+    }
+
+    this.setState({
+      name:  this.state.name, 
+      description: this.state.description, 
+      campusId: this.state.campusId, 
+      image_url:this.state.image_url,
+      redirect: true, 
+    });
+    
+
+  }
+
   // Render a Campus view by passing campus data as props to the corresponding View component
   render() {
+    if(this.state.redirect) {
+      return (<Redirect to={`/campuses`}/>)
+    }
     return (
       <div>
         <Header />
         <CampusView campus={this.props.campus} />
+
+        <EditCampusView campus={this.props.campus}           
+        handleChange = {this.handleChange} 
+        handleSubmit={this.handleSubmit}     
+        ></EditCampusView>
       </div>
     );
   }
@@ -43,6 +96,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     fetchCampus: (id) => dispatch(fetchCampusThunk(id)),
+    editCampus: (id) => dispatch(editCampusThunk(id))
   };
 };
 
